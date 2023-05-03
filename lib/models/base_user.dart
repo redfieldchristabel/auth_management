@@ -1,11 +1,11 @@
 import 'dart:ui';
-
+import 'package:isar/isar.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'base_user.g.dart';
 
 abstract class BaseUser {
-  final String id;
+  final Id id;
   final String username;
   final String email;
 
