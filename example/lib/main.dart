@@ -1,9 +1,13 @@
 import 'package:auth_management/models/base_user.dart';
+import 'package:auth_management/services/base_auth_service.dart';
 import 'package:auth_management/widgets/auth_screen_handler.dart';
+import 'package:example/models/user.dart';
+import 'package:example/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 void main() {
+BaseAuthService.initialize(UserSchema);
   runApp(const ProviderScope(child: MyApp()));
 }
 
