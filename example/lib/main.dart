@@ -5,6 +5,7 @@ import 'package:example/models/user.dart';
 import 'package:example/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:isar/isar.dart';
 
 Future<void> main() async {
   await BaseAuthService.initialize(UserSchema);
@@ -32,8 +33,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
         ),
         home: AuthScreenHandler<User>(
-          userStream:
-              authService.isar.users.watchObject(authService.fastHash('0')),
+          authService: authService,
           authScreen: const MyHomePage(
             title: 'auth screen',
           ),

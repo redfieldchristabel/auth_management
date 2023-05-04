@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class AuthScreenHandler<T extends BaseUser> extends ConsumerStatefulWidget {
   const AuthScreenHandler(
-      {required this.userStream,
+      {required this.authService,
       required this.authScreen,
       required this.afterAuthScreen,
       Key? key})
@@ -13,7 +13,7 @@ class AuthScreenHandler<T extends BaseUser> extends ConsumerStatefulWidget {
 
   final Widget authScreen;
   final Widget afterAuthScreen;
-  final Stream<T?> userStream;
+  final BaseAuthService<T> authService;
 
   @override
   ConsumerState<AuthScreenHandler<T>> createState() =>
@@ -24,7 +24,7 @@ class _AuthScreenHandlerState<T extends BaseUser>
     extends ConsumerState<AuthScreenHandler<T>> {
   @override
   void initState() {
-    Stream<T?> userChanged = widget.userStream;
+    Stream userChanged = widget.authService.userStream();
     userChanged.listen((newUser) {
       print('User exist: ${newUser != null}');
       if (newUser != null) {

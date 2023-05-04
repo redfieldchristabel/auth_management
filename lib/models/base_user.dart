@@ -5,12 +5,10 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'base_user.g.dart';
 
-class UserAuthService extends BaseAuthService {}
-
 abstract class BaseUser {
   final String id;
 
-  Id get isarId => UserAuthService().fastHash(id);
+  Id get isarId => BaseAuthService.fastHash(id);
 
   final String username;
   final String email;
