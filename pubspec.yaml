@@ -11,10 +11,14 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_riverpod: ^2.3.6
+  http: ^0.13.6
   isar: ^3.1.0+1
   isar_flutter_libs: ^3.1.0+1
+  oauth2: ^2.0.1
   path_provider: ^2.0.14
   riverpod_annotation: ^2.1.1
+  uni_links: ^0.5.1
+  url_launcher: ^6.1.10
 
 dev_dependencies:
   flutter_test:
