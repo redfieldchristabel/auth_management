@@ -65,7 +65,8 @@ abstract class BaseAuthService<T extends BaseUser> {
   /// such as the user's credentials and authorization code. OAuth2 recommends
   /// using HTTPS to secure all communication with the [authorizationEndpoint].
   Uri get authorizationEndpoint => throw UnimplementedError(
-      "you does not implement this getter yet,\n please do so by overwrite authorizationEndpoint getter from your auth service");
+      "you does not implement this getter yet,\n"
+      "please do so by overwrite authorizationEndpoint getter from your auth service");
 
   /// Returns the URL for the token endpoint.
   ///
@@ -82,7 +83,8 @@ abstract class BaseAuthService<T extends BaseUser> {
   /// such as access tokens and refresh tokens. OAuth2 recommends using HTTPS to
   /// secure all communication with the [tokenEndpoint].
   Uri get tokenEndpoint => throw UnimplementedError(
-      "you does not implement this getter yet,\n please do so by overwrite tokenEndpoint getter from your auth service");
+      "you does not implement this getter yet,\n"
+      "please do so by overwrite tokenEndpoint getter from your auth service");
 
   /// Returns the redirect URL for the OAuth2 client application.
   ///
@@ -102,7 +104,8 @@ abstract class BaseAuthService<T extends BaseUser> {
   /// all redirect URLs to ensure the connection between the client and server is
   /// encrypted and secure.
   Uri get redirectUrl => throw UnimplementedError(
-      "you does not implement this getter yet,\n please do so by overwrite redirectUrl getter from your auth service");
+      "you does not implement this getter yet,\n"
+      "please do so by overwrite redirectUrl getter from your auth service");
 
   /// Returns the unique identifier for the OAuth2 client application.
   ///
@@ -122,8 +125,9 @@ abstract class BaseAuthService<T extends BaseUser> {
   /// and gain access to the user's resources. OAuth2 recommends using a secure
   /// storage mechanism to store the [identifier], such as a password manager or
   /// keychain.
-  String get identifier => throw UnimplementedError(
-      "you does not implement this getter yet,\n please do so by overwrite identifier getter from your auth service");
+  String get identifier =>
+      throw UnimplementedError("you does not implement this getter yet,\n"
+          "please do so by overwrite identifier getter from your auth service");
 
   /// Returns the client secret for the OAuth2 client application.
   ///
