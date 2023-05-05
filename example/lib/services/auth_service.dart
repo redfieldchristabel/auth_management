@@ -7,10 +7,7 @@ class AuthService extends BaseAuthService<User> {
 
   @override
   Future<void> signIn() async {
-    print("isar : ${isar.isOpen}");
-    await isar.writeTxn(() async {
-      await isar.users.put(User(id: '0', username: 'username', email: 'email'));
-    });
+    addUserToCurrentAuth(User(id: '0', username: 'username', email: 'email'));
   }
 
   @override

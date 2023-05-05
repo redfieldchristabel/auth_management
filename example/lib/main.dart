@@ -78,7 +78,6 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
   @override
   void initState() {
     ref.read(userNotifierProvider);
-    authService.signIn();
     super.initState();
   }
 

@@ -1,4 +1,5 @@
 import 'package:auth_management/auth_management.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -29,6 +30,14 @@ abstract class BaseAuthService<T extends BaseUser> {
     }
   }
 
+  /// A widget that register current user from the request param
+  /// [user] a object that will be register as current user
+  Future<void> addUserToCurrentAuth(T user) async {
+    await isar.writeTxn(() async {
+      await usersIsar.put(user);
+    });
+  }
+
   /// FNV-1a 64bit hash algorithm optimized for Dart Strings
   static int fastHash(String string) {
     var hash = 0xcbf29ce484222325;
@@ -45,7 +54,10 @@ abstract class BaseAuthService<T extends BaseUser> {
     return hash;
   }
 
-  void signIn() {}
-
-  void signOut() {}
+  /// A function to delete all user in the isar database for  [T] collection
+  /// if you did override this function call the super method.
+  @mustCallSuper
+  Future<void> signOut() async {
+    await usersIsar.where().deleteAll();
+  }
 }
