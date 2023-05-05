@@ -1,4 +1,3 @@
-import 'package:auth_management/models/base_user.dart';
 import 'package:auth_management/services/base_auth_service.dart';
 import 'package:example/models/user.dart';
 import 'package:isar/isar.dart';
