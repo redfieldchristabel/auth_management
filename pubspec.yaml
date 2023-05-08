@@ -8,9 +8,13 @@ environment:
   flutter: ">=1.17.0"
 
 dependencies:
+  firebase_auth: ^4.5.0
+  firebase_core: ^2.11.0
   flutter:
     sdk: flutter
+  flutter_facebook_auth: ^5.0.10
   flutter_riverpod: ^2.3.6
+  google_sign_in: ^6.1.0
   http: ^0.13.6
   isar: ^3.1.0+1
   isar_flutter_libs: ^3.1.0+1

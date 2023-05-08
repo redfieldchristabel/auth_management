@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:auth_management/auth_management.dart';
-import 'package:auth_management/auth_management_exception.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';

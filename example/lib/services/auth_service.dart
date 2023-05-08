@@ -1,17 +1,25 @@
 import 'package:auth_management/services/base_auth_service.dart';
-import 'package:example/models/user.dart';
+import 'package:auth_management/services/firebase_auth_service.dart';
+import 'package:example/models/example_user.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:isar/isar.dart';
 
-class AuthService extends BaseAuthService<User> {
+class AuthService extends BaseAuthService<ExampleUser>
+    with FirebaseAuthService<ExampleUser> {
   Isar get isar => BaseAuthService.isar;
 
   @override
-  Future<void> signIn() async {
-    addUserToCurrentAuth(User(id: '0', username: 'username', email: 'email'));
-  }
+  IsarCollection<ExampleUser> get usersIsar => isar.exampleUsers;
 
   @override
-  IsarCollection<User> get usersIsar => isar.users;
+  ExampleUser? userMorph(User? user) {
+    if (user == null) return null;
+    return ExampleUser(
+      id: user.uid,
+      username: user.displayName ?? "No Username",
+      email: user.email ?? "No Email",
+    );
+  }
 }
 
 final AuthService authService = AuthService();
