@@ -14,12 +14,14 @@ mixin FirebaseAuthService<T extends BaseUser> on BaseAuthService<T> {
   /// stream firebase user auth state change instead of normal local database (isar) user.
   @override
   Stream<T?> userStream() {
-    return firebaseAuth.authStateChanges().map((event) => userMorph(event));
+    return firebaseAuth
+        .authStateChanges()
+        .asyncMap((event) => userMorph(event));
   }
 
   /// a override method to to be implement so this service can morph [User]
   /// to your real user class [T].
-  T? userMorph(User? user);
+  Future<T>? userMorph(User? user);
 
   /// Attempts to sign in the user using the provided email and password credentials.
   ///
