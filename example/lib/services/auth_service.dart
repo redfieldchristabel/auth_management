@@ -12,7 +12,7 @@ class AuthService extends BaseAuthService<ExampleUser>
   IsarCollection<ExampleUser> get usersIsar => isar.exampleUsers;
 
   @override
-  ExampleUser? userMorph(User? user) {
+  Future<ExampleUser?> userMorph(User? user) async {
     if (user == null) return null;
     return ExampleUser(
       id: user.uid,
