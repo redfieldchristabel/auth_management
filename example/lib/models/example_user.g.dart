@@ -816,18 +816,18 @@ Map<String, dynamic> _$ExampleUserToJson(ExampleUser instance) =>
 // RiverpodGenerator
 // **************************************************************************
 
-String _$userHash() => r'657acaf12dc1700911174d10aa77f1ac040288b1';
+String _$exampleUserHash() => r'e9778be5c6b79a5ee999dd068b901b8c2df02ad0';
 
-/// See also [user].
-@ProviderFor(user)
-final userProvider = AutoDisposeProvider<ExampleUser?>.internal(
-  user,
-  name: r'userProvider',
+/// See also [exampleUser].
+@ProviderFor(exampleUser)
+final exampleUserProvider = AutoDisposeProvider<ExampleUser?>.internal(
+  exampleUser,
+  name: r'exampleUserProvider',
   debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$userHash,
+      const bool.fromEnvironment('dart.vm.product') ? null : _$exampleUserHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef UserRef = AutoDisposeProviderRef<ExampleUser?>;
+typedef ExampleUserRef = AutoDisposeProviderRef<ExampleUser?>;
 // ignore_for_file: unnecessary_raw_strings, subtype_of_sealed_class, invalid_use_of_internal_member, do_not_use_environment, prefer_const_constructors, public_member_api_docs, avoid_private_typedef_functions

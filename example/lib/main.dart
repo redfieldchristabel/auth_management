@@ -1,11 +1,15 @@
 import 'package:auth_management/models/base_user.dart';
 import 'package:auth_management/services/base_auth_service.dart';
-import 'package:auth_management/widgets/auth_screen_handler.dart';
 import 'package:example/models/example_user.dart';
+import 'package:example/router.dart';
+import 'package:example/screens/second_hand.dart';
+import 'package:example/screens/without_signin.dart';
+import 'package:example/services/auth_route_service.dart';
 import 'package:example/services/auth_service.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import 'firebase_options.dart';
 
@@ -18,37 +22,45 @@ Future<void> main() async {
   runApp(const ProviderScope(child: MyApp()));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 
   // This widget is the root of your application.
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          // This is the theme of your application.
-          //
-          // Try running your application with "flutter run". You'll see the
-          // application has a blue toolbar. Then, without quitting the app, try
-          // changing the primarySwatch below to Colors.green and then invoke
-          // "hot reload" (press "r" in the console where you ran "flutter run",
-          // or simply save your changes to "hot reload" in a Flutter IDE).
-          // Notice that the counter didn't reset back to zero; the application
-          // is not restarted.
-          primarySwatch: Colors.blue,
-        ),
-        home: AuthScreenHandler<ExampleUser>(
-          authService: authService,
-          authScreen: const MyHomePage(
-            title: 'auth screen',
-          ),
-          afterAuthScreen: Consumer(builder: (context, ref, _) {
-            return MyHomePage(
-              title: ref.watch(userProvider)?.username ?? " Tidak direkod",
-            );
-          }),
-        ));
+  Widget build(BuildContext context, WidgetRef ref) {
+    return MaterialApp.router(
+      routerConfig: GoRouter(
+        routes: $appRoutes,
+        redirect: authRouteService.authGateFuncGenerator(
+            ref: ref, excludeRoutes: [WithoutSignInRoute().location]),
+      ),
+    );
+
+    // return MaterialApp(
+    //     title: 'Flutter Demo',
+    //     theme: ThemeData(
+    //       // This is the theme of your application.
+    //       //
+    //       // Try running your application with "flutter run". You'll see the
+    //       // application has a blue toolbar. Then, without quitting the app, try
+    //       // changing the primarySwatch below to Colors.green and then invoke
+    //       // "hot reload" (press "r" in the console where you ran "flutter run",
+    //       // or simply save your changes to "hot reload" in a Flutter IDE).
+    //       // Notice that the counter didn't reset back to zero; the application
+    //       // is not restarted.
+    //       primarySwatch: Colors.blue,
+    //     ),
+    //     home: AuthScreenHandler<ExampleUser>(
+    //       authService: authService,
+    //       authScreen: const MyHomePage(
+    //         title: 'auth screen',
+    //       ),
+    //       afterAuthScreen: Consumer(builder: (context, ref, _) {
+    //         return MyHomePage(
+    //           title: ref.watch(userProvider)?.username ?? " Tidak direkod",
+    //         );
+    //       }),
+    //     ));
   }
 }
 
@@ -107,9 +119,25 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
-        child: TextButton(
-          onPressed: authService.firebaseAuth.signInAnonymously,
-          child: const Text("Sign In"),
+        child: Column(
+          children: [
+            TextButton(
+              onPressed: authService.firebaseAuth.signInAnonymously,
+              child: const Text("Sign In"),
+            ),
+            TextButton(
+              onPressed: () {
+                SecondRoute().go(context);
+              },
+              child: const Text("second screen"),
+            ),
+            TextButton(
+              onPressed: () {
+                WithoutSignInRoute().go(context);
+              },
+              child: const Text("new screen"),
+            ),
+          ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
