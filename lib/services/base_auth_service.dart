@@ -1,7 +1,10 @@
 import 'dart:io';
 
 import 'package:auth_management/auth_management.dart';
+import 'package:auth_management/models/user_auth_state.dart';
+import 'package:auth_management/widgets/auth_service_provider.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:oauth2/oauth2.dart' as oauth2;
@@ -10,7 +13,8 @@ import 'package:uni_links/uni_links.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 abstract class BaseAuthService<T extends BaseUser> {
-  static late Isar isar;
+  static late final Isar isar;
+  static late final BaseAuthService authService;
 
   /// a client that initialize after any OAUTH2 authentication method are called
   /// use any of this method to authenticate with OAuth2 server
@@ -21,12 +25,59 @@ abstract class BaseAuthService<T extends BaseUser> {
 
   /// Run this function at the first function that will run first during the start up of the application.
   /// Normally inside the main function
-  static Future<void> initialize(CollectionSchema<dynamic> userSchema) async {
+  static Future<void> initialize(
+      CollectionSchema<dynamic> userSchema, BaseAuthService authService) async {
     final dir = await getApplicationDocumentsDirectory();
     isar = await Isar.open(
       [userSchema],
       directory: dir.path,
     );
+    BaseAuthService.authService = authService;
+  }
+
+  BaseAuthRouteService get routeService => throw UnimplementedError();
+
+  /// Links user authentication with a provider using Riverpod.
+  ///
+  /// The function takes a [ref] parameter of type [WidgetRef], which is typically
+  /// provided by Riverpod and represents the current scope of the widget.
+  ///
+  /// The function establishes a listener to a user stream by calling [userStream()].
+  /// The [userStream] function is expected to return a [Stream] that emits updates
+  /// whenever the user authentication state changes.
+  ///
+  /// When a new user is emitted from the stream ([newUser] is not null), the function
+  /// calls [signIn(newUser)] on the [userNotifierProvider]'s notifier, which is responsible
+  /// for handling the sign-in process. This typically triggers state updates and rebuilds
+  /// of dependent widgets.
+  ///
+  /// When null is emitted from the stream, indicating that the user is not authenticated,
+  /// the function calls [signOut()] on the [userNotifierProvider]'s notifier, triggering
+  /// the sign-out process and subsequent state updates.
+  ///
+  /// This initialization is automatically call in [AuthScreenHandler] widget so
+  /// only call this function if you don't use [AuthScreenHandler]
+  ///
+  /// Example usage:
+  ///
+  /// ```dart
+  /// final ref = ProviderContainer();
+  ///
+  /// // ...
+  ///
+  /// ref.read(userStreamProvider).listen((newUser) {
+  ///   linkAuthWithProvider(ref);
+  /// });
+  /// ```
+  void linkAuthWithProvider(WidgetRef ref) {
+    userStream().listen((newUser) {
+      print('User exist: ${newUser != null}');
+      if (newUser != null) {
+        ref.watch(userNotifierProvider.notifier).signIn(newUser);
+      } else {
+        ref.watch(userNotifierProvider.notifier).signOut();
+      }
+    });
   }
 
   /// FNV-1a 64bit hash algorithm optimized for Dart Strings
@@ -167,6 +218,9 @@ abstract class BaseAuthService<T extends BaseUser> {
       yield user;
     }
   }
+
+  /// Return the listenable version of current auth
+  authListenable(WidgetRef ref) => UserAuthState(ref: ref);
 
   /// A widget that register current user from the request param
   /// [user] a object that will be register as current user

@@ -18,4 +18,9 @@ class AuthManagementException implements Exception {
 
   /// An optional action that can be taken to resolve the error.
   final String? todoAction;
+
+  @override
+  String toString() {
+    return message + (todoAction ?? '');
+  }
 }

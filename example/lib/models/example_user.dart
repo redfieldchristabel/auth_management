@@ -31,6 +31,6 @@ class ExampleUser extends BaseUser {
 }
 
 @riverpod
-ExampleUser? user(UserRef ref) {
+ExampleUser? exampleUser(ExampleUserRef ref) {
   return ref.watch(userNotifierProvider) as ExampleUser?;
 }
