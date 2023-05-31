@@ -41,16 +41,11 @@ abstract class BaseAuthRouteService {
 
   GoROuterRedirectFunction authGateFuncGenerator(WidgetRef ref) {
     return (BuildContext context, GoRouterState state) {
-      print(state.fullPath);
       final bool excludeScreenCheck =
           withoutAuthRoutes?.any((element) => element == state.location) ??
               false;
-      print(
-          "Aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa ${ref.read(userNotifierProvider) == null}");
 
       if (ref.read(userNotifierProvider) == null && !excludeScreenCheck) {
-        print(
-            "0000000000000000000000000000000000000000000000000000000000000000000000000000000000");
         return SignInRoute().location;
       }
 
