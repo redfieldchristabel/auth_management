@@ -131,7 +131,7 @@ mixin FirebaseAuthService<T extends BaseUser> on BaseAuthService<T> {
   }
 
   /// Return the listenable version of current firebase auth
-  firebaseAuthListenable() => UserAuthState(userStream: this.userStream());
+  firebaseAuthListenable() => UserAuthState(this.userStream());
 
   /// A function to end Firebase auth session in this device
   @override

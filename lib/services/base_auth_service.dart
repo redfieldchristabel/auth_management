@@ -220,7 +220,7 @@ abstract class BaseAuthService<T extends BaseUser> {
   }
 
   /// Return the listenable version of current auth
-  authListenable(WidgetRef ref) => UserAuthState(ref: ref);
+  authListenable() => UserAuthState(userStream());
 
   /// A widget that register current user from the request param
   /// [user] a object that will be register as current user
