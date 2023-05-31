@@ -31,8 +31,8 @@ abstract class BaseAuthRouteService {
   Widget get signUpScreen => signInScreen;
 
   /// The error screen widget builder.
-  Widget Function(BuildContext context, GoRouterState state)? get errorScreen =>
-      null;
+  Widget Function(BuildContext context, GoRouterState state)?
+      get errorScreenBuilder => null;
 
   /// The list of routes that don't require authentication.
   List<String>? get withoutAuthRoutes => [];
@@ -47,7 +47,7 @@ abstract class BaseAuthRouteService {
       refreshListenable: refreshListenable,
       routes: routes,
       redirect: authGateFuncGenerator(ref),
-      errorBuilder: errorScreen,
+      errorBuilder: errorScreenBuilder,
     );
   }
 
