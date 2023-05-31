@@ -22,7 +22,8 @@ abstract class BaseAuthRouteService {
 
   List<String>? get withoutAuthRoutes => [];
 
-  Listenable get refreshListenable;
+  Listenable get refreshListenable =>
+      BaseAuthService.authService.authListenable();
 
   GoRouter routerConfig(WidgetRef ref) {
     return GoRouter(

@@ -130,9 +130,6 @@ mixin FirebaseAuthService<T extends BaseUser> on BaseAuthService<T> {
         : await FirebaseAuth.instance.signInWithProvider(appleProvider);
   }
 
-  /// Return the listenable version of current firebase auth
-  firebaseAuthListenable() => UserAuthState(this.userStream());
-
   /// A function to end Firebase auth session in this device
   @override
   Future<void> signOut() async {
