@@ -22,7 +22,7 @@ class AuthRouteService extends BaseAuthRouteService {
   List<String>? get withoutAuthRoutes => [WithoutSignInRoute().location];
 
   @override
-  Listenable get refreshListenable => authService.firebaseAuthListenable();
+  Listenable get refreshListenable => authService.authListenable();
 }
 
 final AuthRouteService authRouteService = AuthRouteService();
