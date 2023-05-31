@@ -20,6 +20,11 @@ abstract class BaseAuthRouteService {
 
   Widget get signInScreen;
 
+  Widget get signUpScreen => signInScreen;
+
+  Widget Function(BuildContext context, GoRouterState state)? get errorScreen =>
+      null;
+
   List<String>? get withoutAuthRoutes => [];
 
   Listenable get refreshListenable =>
@@ -30,6 +35,7 @@ abstract class BaseAuthRouteService {
       refreshListenable: refreshListenable,
       routes: routes,
       redirect: authGateFuncGenerator(ref),
+      errorBuilder: errorScreen,
     );
   }
 
