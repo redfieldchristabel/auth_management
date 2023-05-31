@@ -6,30 +6,42 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-typedef GoROuterRedirectFunction = FutureOr<String?> Function(
+/// A function type for redirecting the GoRouter to a different route.
+typedef GoRouterRedirectFunction = FutureOr<String?> Function(
     BuildContext, GoRouterState);
 
+/// An abstract base class for defining an authentication route service.
 abstract class BaseAuthRouteService {
+  /// The route location to navigate to after successful authentication.
   String get afterAuthRouteLocation;
 
+  /// The list of authentication routes.
   List<RouteBase> get authRoutes => $appRoutes;
 
+  /// The list of application routes.
   List<RouteBase> get appRoute;
 
+  /// The combined list of application and authentication routes.
   List<RouteBase> get routes => appRoute..addAll(authRoutes);
 
+  /// The sign-in screen widget.
   Widget get signInScreen;
 
+  /// The sign-up screen widget.
   Widget get signUpScreen => signInScreen;
 
+  /// The error screen widget builder.
   Widget Function(BuildContext context, GoRouterState state)? get errorScreen =>
       null;
 
+  /// The list of routes that don't require authentication.
   List<String>? get withoutAuthRoutes => [];
 
+  /// The listenable object that triggers route refresh when changed.
   Listenable get refreshListenable =>
       BaseAuthService.authService.authListenable();
 
+  /// Configures the GoRouter with the specified routes and settings.
   GoRouter routerConfig(WidgetRef ref) {
     return GoRouter(
       refreshListenable: refreshListenable,
@@ -39,7 +51,8 @@ abstract class BaseAuthRouteService {
     );
   }
 
-  GoROuterRedirectFunction authGateFuncGenerator(WidgetRef ref) {
+  /// Generates the authentication gate redirect function.
+  GoRouterRedirectFunction authGateFuncGenerator(WidgetRef ref) {
     return (BuildContext context, GoRouterState state) {
       final bool excludeScreenCheck =
           withoutAuthRoutes?.any((element) => element == state.location) ??
