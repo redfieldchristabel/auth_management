@@ -1,5 +1,6 @@
 import 'package:auth_management/models/base_user.dart';
 import 'package:auth_management/services/base_auth_service.dart';
+import 'package:auth_management/widgets/auth_service_provider.dart';
 import 'package:example/models/example_user.dart';
 import 'package:example/router.dart';
 import 'package:example/screens/second_hand.dart';
@@ -18,22 +19,28 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  await BaseAuthService.initialize(ExampleUserSchema);
+  await BaseAuthService.initialize(ExampleUserSchema, authService);
   runApp(const ProviderScope(child: MyApp()));
 }
 
-class MyApp extends ConsumerWidget {
+class MyApp extends ConsumerStatefulWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends ConsumerState<MyApp> {
+  @override
+  void initState() {
+    authService.linkAuthWithProvider(ref);
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return MaterialApp.router(
-      routerConfig: GoRouter(
-        routes: $appRoutes,
-        redirect: authRouteService.authGateFuncGenerator(
-            ref: ref, excludeRoutes: [WithoutSignInRoute().location]),
-      ),
+      routerConfig: authRouteService.routerConfig(ref),
     );
 
     // return MaterialApp(

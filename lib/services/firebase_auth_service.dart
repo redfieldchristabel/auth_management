@@ -1,8 +1,10 @@
 import 'package:auth_management/auth_management.dart';
+import 'package:auth_management/models/user_auth_state.dart';
 import 'package:auth_management/services/base_auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 /// The FirebaseAuthService is a mixin that provides Firebase authentication
@@ -127,6 +129,9 @@ mixin FirebaseAuthService<T extends BaseUser> on BaseAuthService<T> {
         ? await FirebaseAuth.instance.signInWithPopup(appleProvider)
         : await FirebaseAuth.instance.signInWithProvider(appleProvider);
   }
+
+  /// Return the listenable version of current firebase auth
+  firebaseAuthListenable() => UserAuthState(userStream: this.userStream());
 
   /// A function to end Firebase auth session in this device
   @override

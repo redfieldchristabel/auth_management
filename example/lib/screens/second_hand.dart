@@ -1,3 +1,4 @@
+import 'package:example/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -6,7 +7,11 @@ class SecondScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(body: Center(child: Text("second screen")));
+    return Scaffold(
+      body: const Center(child: Text("second screen")),
+      floatingActionButton:
+          FloatingActionButton(onPressed: authService.signOut),
+    );
   }
 }
 

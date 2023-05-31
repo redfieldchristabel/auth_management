@@ -31,15 +31,17 @@ class _AuthScreenHandlerState<T extends BaseUser>
     extends ConsumerState<AuthScreenHandler<T>> {
   @override
   void initState() {
-    Stream userChanged = widget.authService.userStream();
-    userChanged.listen((newUser) {
-      print('User exist: ${newUser != null}');
-      if (newUser != null) {
-        ref.watch(userNotifierProvider.notifier).signIn(newUser);
-      } else {
-        ref.watch(userNotifierProvider.notifier).signOut();
-      }
-    });
+    // Stream userChanged = widget.authService.userStream();
+    widget.authService.linkAuthWithProvider(ref);
+
+    // userChanged.listen((newUser) {
+    //   print('User exist: ${newUser != null}');
+    //   if (newUser != null) {
+    //     ref.watch(userNotifierProvider.notifier).signIn(newUser);
+    //   } else {
+    //     ref.watch(userNotifierProvider.notifier).signOut();
+    //   }
+    // });
     super.initState();
   }
 
