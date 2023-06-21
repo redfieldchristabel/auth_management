@@ -1,7 +1,7 @@
 name: auth_management
 description: Auth management for TN mobile development
-version: 0.0.1
-homepage:
+version: 0.0.3
+homepage: https://codify-2.gitbook.io/codify/introduction/auth-management-overview
 
 environment:
   sdk: '>=2.19.6 <3.0.0'
