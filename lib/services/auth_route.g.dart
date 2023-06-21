@@ -9,6 +9,7 @@ part of 'auth_route.dart';
 List<RouteBase> get $appRoutes => [
       $signInRoute,
       $signUpRoute,
+      $testRoute,
     ];
 
 RouteBase get $signInRoute => GoRouteData.$route(
@@ -41,6 +42,26 @@ extension $SignUpRouteExtension on SignUpRoute {
 
   String get location => GoRouteData.$location(
         '/sign-up',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+}
+
+RouteBase get $testRoute => GoRouteData.$route(
+      path: '/test',
+      factory: $TestRouteExtension._fromState,
+    );
+
+extension $TestRouteExtension on TestRoute {
+  static TestRoute _fromState(GoRouterState state) => TestRoute();
+
+  String get location => GoRouteData.$location(
+        '/test',
       );
 
   void go(BuildContext context) => context.go(location);
