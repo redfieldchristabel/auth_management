@@ -71,8 +71,7 @@ abstract class BaseAuthRouteService {
 
       if (ref.read(userNotifierProvider) == null && !excludeScreenCheck) {
         if (kDebugMode) {
-          print('User is not authenticated'
-              "cannot redirect to ${state.location}");
+          print('User is not authenticated');
         }
         return SignInRoute().location;
       }
