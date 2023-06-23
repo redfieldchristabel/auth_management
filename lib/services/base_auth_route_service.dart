@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:auth_management/auth_management.dart';
 import 'package:auth_management/services/auth_route.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -65,6 +66,10 @@ abstract class BaseAuthRouteService {
               false;
 
       if (ref.read(userNotifierProvider) == null && !excludeScreenCheck) {
+        if (kDebugMode) {
+          print('User is not authenticated'
+              "cannot redirect to ${state.location}");
+        }
         return SignInRoute().location;
       }
 
