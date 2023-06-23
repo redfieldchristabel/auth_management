@@ -61,6 +61,10 @@ abstract class BaseAuthRouteService {
         return TestRoute().location;
       }
 
+      if (kDebugMode) {
+        print(state.location);
+      }
+
       final bool excludeScreenCheck =
           withoutAuthRoutes?.any((element) => element == state.location) ??
               false;
