@@ -57,6 +57,7 @@ abstract class BaseAuthRouteService {
   /// Generates the authentication gate redirect function.
   GoRouterRedirectFunction authGateFuncGenerator(WidgetRef ref) {
     return (BuildContext context, GoRouterState state) {
+      // return test screen in any case
       if (testScreen != null) {
         return TestRoute().location;
       }
@@ -69,7 +70,7 @@ abstract class BaseAuthRouteService {
           withoutAuthRoutes?.any((element) => element == state.location) ??
               false;
 
-      if (ref.read(userNotifierProvider) == null && !excludeScreenCheck) {
+      if (ref.watch(userNotifierProvider) == null && !excludeScreenCheck) {
         if (kDebugMode) {
           print('User is not authenticated');
         }
