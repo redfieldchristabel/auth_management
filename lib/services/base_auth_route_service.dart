@@ -52,8 +52,16 @@ abstract class BaseAuthRouteService {
     );
   }
 
+  /// The test screen widget.
+  /// put your screen here to bypass all the auth gate
+  /// remove this override to use auth gate
   Widget? get testScreen => null;
 
+  /// The list of test routes.
+  ///
+  /// [withoutAuthRoutes] is used to bypass the auth gate
+  /// if you need to redirect to other page while using [testScreen],
+  /// you need to include that route in this list
   List<String> get testRoutes => [];
 
   /// Generates the authentication gate redirect function.
