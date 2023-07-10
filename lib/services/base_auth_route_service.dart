@@ -54,11 +54,17 @@ abstract class BaseAuthRouteService {
 
   Widget? get testScreen => null;
 
+  List<String> get testRoutes => [];
+
   /// Generates the authentication gate redirect function.
   GoRouterRedirectFunction authGateFuncGenerator(WidgetRef ref) {
     return (BuildContext context, GoRouterState state) {
       // return test screen in any case
       if (testScreen != null) {
+        if (testRoutes.any((element) => element == state.location)) {
+          return null;
+        }
+
         return TestRoute().location;
       }
 
