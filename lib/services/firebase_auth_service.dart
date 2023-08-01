@@ -1,10 +1,7 @@
 import 'package:auth_management/auth_management.dart';
-import 'package:auth_management/models/user_auth_state.dart';
-import 'package:auth_management/services/base_auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 /// The FirebaseAuthService is a mixin that provides Firebase authentication

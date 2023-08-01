@@ -69,7 +69,7 @@ abstract class BaseAuthRouteService {
     return (BuildContext context, GoRouterState state) {
       // return test screen in any case
       if (testScreen != null) {
-        if (testRoutes.any((element) => element == state.location)) {
+        if (testRoutes.any((element) => element == state.uri.toString())) {
           return null;
         }
 
@@ -77,11 +77,11 @@ abstract class BaseAuthRouteService {
       }
 
       if (kDebugMode) {
-        print(state.location);
+        print(state.uri.toString());
       }
 
       final bool excludeScreenCheck =
-          withoutAuthRoutes?.any((element) => element == state.location) ??
+          withoutAuthRoutes?.any((element) => element == state.uri.toString()) ??
               false;
 
       if (ref.watch(userNotifierProvider) == null && !excludeScreenCheck) {
@@ -91,7 +91,7 @@ abstract class BaseAuthRouteService {
         return SignInRoute().location;
       }
 
-      if (state.location == SignInRoute().location) {
+      if (state.uri.toString() == SignInRoute().location) {
         return afterAuthRouteLocation;
       }
       return null;

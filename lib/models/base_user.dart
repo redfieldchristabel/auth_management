@@ -1,4 +1,3 @@
-import 'dart:ui';
 import 'package:auth_management/services/base_auth_service.dart';
 import 'package:isar/isar.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';

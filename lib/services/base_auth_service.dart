@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:auth_management/auth_management.dart';
 import 'package:auth_management/models/user_auth_state.dart';
-import 'package:auth_management/widgets/auth_service_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:isar/isar.dart';

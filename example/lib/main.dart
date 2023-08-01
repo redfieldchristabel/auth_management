@@ -1,6 +1,5 @@
 import 'package:auth_management/models/base_user.dart';
 import 'package:auth_management/services/base_auth_service.dart';
-import 'package:auth_management/widgets/auth_service_provider.dart';
 import 'package:example/models/example_user.dart';
 import 'package:example/router.dart';
 import 'package:example/screens/second_hand.dart';
@@ -10,7 +9,6 @@ import 'package:example/services/auth_service.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 
 import 'firebase_options.dart';
 

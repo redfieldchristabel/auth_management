@@ -1,4 +1,3 @@
-import 'dart:async';
 
 import 'package:example/models/example_user.dart';
 import 'package:example/screens/second_hand.dart';
