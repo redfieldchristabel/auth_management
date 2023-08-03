@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:auth_management/auth_management.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:http/http.dart' as http;
 
 /// The FirebaseAuthService is a mixin that provides Firebase authentication
 /// functionalities to an existing [BaseAuthService] class.
@@ -10,12 +13,47 @@ import 'package:google_sign_in/google_sign_in.dart';
 mixin FirebaseAuthService<T extends BaseUser> on BaseAuthService<T> {
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
+  /// a client that initialize after any Firebase authentication method are called
+  /// use any of this method to authenticate with Firebase authorization
+  /// [signInWithEmailAndPasswords]
+  /// [signInWithApple]
+  /// [signInWithGoogle]
+  /// [signInWithFacebook]
+  ///
+  ///
+  /// you may also initialize this getter for custom authenticate
+  @override
+  FirebaseAuthClient? get httpClient => null;
+
   /// stream firebase user auth state change instead of normal local database (isar) user.
   @override
   Stream<T?> userStream() {
     return firebaseAuth
         .authStateChanges()
         .asyncMap((event) => userMorph(event));
+  }
+
+  /// create a firebase client
+  Future<void> _createFirebaseHttpClient(dynamic userOrToken) async {
+    //assert if token is not User or string or null
+    assert(userOrToken is User || userOrToken is String || userOrToken == null);
+    if (userOrToken == null) {
+      return httpClient = null;
+    }
+
+    final String token;
+    if (userOrToken is User) {
+      final innerToken = await userOrToken.getIdToken();
+      if (innerToken != null) {
+        token = innerToken;
+      } else {
+        throw AuthManagementException("Error while get token from user");
+      }
+    } else {
+      token = userOrToken;
+    }
+
+    httpClient = FirebaseAuthClient(http.Client(), token);
   }
 
   /// a override method to to be implement so this service can morph [User]
@@ -47,8 +85,11 @@ mixin FirebaseAuthService<T extends BaseUser> on BaseAuthService<T> {
   Future<UserCredential> signInWithEmailAndPasswords(
       {required String email, required String password}) async {
     try {
-      return await firebaseAuth.signInWithEmailAndPassword(
+      final cred = await firebaseAuth.signInWithEmailAndPassword(
           email: email, password: password);
+      await _createFirebaseHttpClient(cred.user);
+
+      return cred;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         throw AuthManagementException("No user found for that email.");
@@ -90,7 +131,10 @@ mixin FirebaseAuthService<T extends BaseUser> on BaseAuthService<T> {
     );
 
     // Once signed in, return the UserCredential
-    return await FirebaseAuth.instance.signInWithCredential(credential);
+
+    final cred = await FirebaseAuth.instance.signInWithCredential(credential);
+    await _createFirebaseHttpClient(cred.user);
+    return cred;
   }
 
   /// Authenticates a user with Firebase using Facebook Login.
@@ -117,20 +161,43 @@ mixin FirebaseAuthService<T extends BaseUser> on BaseAuthService<T> {
         FacebookAuthProvider.credential(loginResult.accessToken!.token);
 
     // Once signed in, return the UserCredential
-    return FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
+    final cred = await FirebaseAuth.instance
+        .signInWithCredential(facebookAuthCredential);
+    await _createFirebaseHttpClient(cred.user);
+    return cred;
   }
 
   Future<UserCredential> signInWithApple() async {
     final appleProvider = AppleAuthProvider();
-    return kIsWeb
+    final cred = kIsWeb
         ? await FirebaseAuth.instance.signInWithPopup(appleProvider)
         : await FirebaseAuth.instance.signInWithProvider(appleProvider);
+
+    await _createFirebaseHttpClient(cred.user);
+    return cred;
   }
 
   /// A function to end Firebase auth session in this device
   @override
   Future<void> signOut() async {
     await firebaseAuth.signOut();
+    await _createFirebaseHttpClient(null);
     super.signOut();
+  }
+}
+
+// custom_http_client.dart
+class FirebaseAuthClient extends http.BaseClient {
+  final http.Client _inner;
+  final String _firebaseAuthToken;
+
+  FirebaseAuthClient(this._inner, this._firebaseAuthToken);
+
+  @override
+  Future<http.StreamedResponse> send(http.BaseRequest request) {
+    // Add the Firebase Auth token to the 'Authorization' header
+    request.headers[HttpHeaders.authorizationHeader] =
+        'Bearer $_firebaseAuthToken';
+    return _inner.send(request);
   }
 }
