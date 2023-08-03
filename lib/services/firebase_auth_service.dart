@@ -28,9 +28,14 @@ mixin FirebaseAuthService<T extends BaseUser> on BaseAuthService<T> {
   /// stream firebase user auth state change instead of normal local database (isar) user.
   @override
   Stream<T?> userStream() {
-    return firebaseAuth
-        .authStateChanges()
-        .asyncMap((event) => userMorph(event));
+    Stream<User?> stream = firebaseAuth.authStateChanges();
+
+    stream.forEach((element) {
+      _createFirebaseHttpClient(element);
+    });
+
+    return stream.asyncMap((event) => userMorph(event));
+    ;
   }
 
   /// create a firebase client
@@ -85,11 +90,8 @@ mixin FirebaseAuthService<T extends BaseUser> on BaseAuthService<T> {
   Future<UserCredential> signInWithEmailAndPasswords(
       {required String email, required String password}) async {
     try {
-      final cred = await firebaseAuth.signInWithEmailAndPassword(
+      return await firebaseAuth.signInWithEmailAndPassword(
           email: email, password: password);
-      await _createFirebaseHttpClient(cred.user);
-
-      return cred;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         throw AuthManagementException("No user found for that email.");
@@ -132,9 +134,7 @@ mixin FirebaseAuthService<T extends BaseUser> on BaseAuthService<T> {
 
     // Once signed in, return the UserCredential
 
-    final cred = await FirebaseAuth.instance.signInWithCredential(credential);
-    await _createFirebaseHttpClient(cred.user);
-    return cred;
+    return await FirebaseAuth.instance.signInWithCredential(credential);
   }
 
   /// Authenticates a user with Firebase using Facebook Login.
@@ -161,27 +161,21 @@ mixin FirebaseAuthService<T extends BaseUser> on BaseAuthService<T> {
         FacebookAuthProvider.credential(loginResult.accessToken!.token);
 
     // Once signed in, return the UserCredential
-    final cred = await FirebaseAuth.instance
+    return await FirebaseAuth.instance
         .signInWithCredential(facebookAuthCredential);
-    await _createFirebaseHttpClient(cred.user);
-    return cred;
   }
 
   Future<UserCredential> signInWithApple() async {
     final appleProvider = AppleAuthProvider();
-    final cred = kIsWeb
+    return kIsWeb
         ? await FirebaseAuth.instance.signInWithPopup(appleProvider)
         : await FirebaseAuth.instance.signInWithProvider(appleProvider);
-
-    await _createFirebaseHttpClient(cred.user);
-    return cred;
   }
 
   /// A function to end Firebase auth session in this device
   @override
   Future<void> signOut() async {
     await firebaseAuth.signOut();
-    await _createFirebaseHttpClient(null);
     super.signOut();
   }
 }
