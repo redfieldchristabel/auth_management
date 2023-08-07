@@ -23,7 +23,7 @@ mixin FirebaseAuthService<T extends BaseUser> on BaseAuthService<T> {
   ///
   /// you may also initialize this getter for custom authenticate
   @override
-  FirebaseAuthClient? get httpClient => null;
+  FirebaseAuthClient? get httpClient => super.httpClient as FirebaseAuthClient?;
 
   /// stream firebase user auth state change instead of normal local database (isar) user.
   @override
