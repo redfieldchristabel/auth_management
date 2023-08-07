@@ -36,6 +36,7 @@ mixin FirebaseAuthService<T extends BaseUser> on BaseAuthService<T> {
 
   /// create a firebase client
   Future<void> _createFirebaseHttpClient(dynamic userOrToken) async {
+    print('masuk sini create firebase client $userOrToken');
     //assert if token is not User or string or null
     assert(userOrToken is User || userOrToken is String || userOrToken == null);
     if (userOrToken == null) {
