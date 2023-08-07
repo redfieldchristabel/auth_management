@@ -28,14 +28,10 @@ mixin FirebaseAuthService<T extends BaseUser> on BaseAuthService<T> {
   /// stream firebase user auth state change instead of normal local database (isar) user.
   @override
   Stream<T?> userStream() {
-    Stream<User?> stream = firebaseAuth.authStateChanges();
-
-    stream.forEach((element) {
-      _createFirebaseHttpClient(element);
+    return firebaseAuth.authStateChanges().asyncMap((element) async {
+      await _createFirebaseHttpClient(element);
+      return userMorph(element);
     });
-
-    return stream.asyncMap((event) => userMorph(event));
-    ;
   }
 
   /// create a firebase client
