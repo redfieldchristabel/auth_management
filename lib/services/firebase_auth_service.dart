@@ -41,6 +41,15 @@ mixin FirebaseAuthService<T extends BaseUser> on BaseAuthService<T> {
     });
   }
 
+  User get user {
+    User? user = firebaseAuth.currentUser;
+    if (user == null) {
+      throw Exception('user is null');
+    }
+
+    return user;
+  }
+
   /// reload current user using firebase [firebaseAuth.currentUser.reload] method
   Future<void> reload() async {
     await firebaseAuth.currentUser?.reload();
