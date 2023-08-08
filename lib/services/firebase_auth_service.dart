@@ -37,8 +37,13 @@ mixin FirebaseAuthService<T extends BaseUser> on BaseAuthService<T> {
   Stream<T?> userStream() {
     return firebaseAuth.userChanges().asyncMap((element) async {
       await _createFirebaseHttpClient(element);
-      return userMorph(element);
+      return await userMorph(element);
     });
+  }
+
+  /// reload current user using firebase [firebaseAuth.currentUser.reload] method
+  Future<void> reload() async {
+    await firebaseAuth.currentUser?.reload();
   }
 
   /// create a firebase client
