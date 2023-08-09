@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:auth_management/auth_management.dart';
+import 'package:auth_management/models/user_auth_state.dart';
 import 'package:auth_management/services/auth_route.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -74,6 +75,14 @@ abstract class BaseAuthRouteService {
             "trigger auth gate redirect builder ${DateTime.now().millisecondsSinceEpoch}");
       }
       final con = ProviderScope.containerOf(context);
+      final BaseUser? user = UserAuthState.currentUser;
+
+      if (kDebugMode) {
+        print("current user from UserAuthState $user");
+      }
+
+      final bool userExists = user != null;
+
       // return test screen in any case
       if (testScreen != null) {
         if (testRoutes.any((element) => element == state.uri.toString())) {
@@ -95,7 +104,7 @@ abstract class BaseAuthRouteService {
         print('user from container ref ${con.read(userNotifierProvider)}');
       }
 
-      if (con.read(userNotifierProvider) == null && !excludeScreenCheck) {
+      if (!userExists && !excludeScreenCheck) {
         if (kDebugMode) {
           print('User is not authenticated');
         }

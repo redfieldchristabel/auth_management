@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 
 class UserAuthState extends ChangeNotifier {
   final Stream<BaseUser?> userStream;
-  BaseUser? currentUser;
+  static BaseUser? currentUser;
 
   UserAuthState(this.userStream) {
     userStream.listen((event) async {
