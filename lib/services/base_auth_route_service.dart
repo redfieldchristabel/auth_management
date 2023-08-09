@@ -69,6 +69,10 @@ abstract class BaseAuthRouteService {
   /// Generates the authentication gate redirect function.
   GoRouterRedirectFunction authGateFuncGenerator() {
     return (BuildContext context, GoRouterState state) {
+      if (kDebugMode) {
+        print(
+            "trigger auth gate redirect builder ${DateTime.now().millisecondsSinceEpoch}");
+      }
       final con = ProviderScope.containerOf(context);
       // return test screen in any case
       if (testScreen != null) {
