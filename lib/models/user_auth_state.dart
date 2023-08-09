@@ -7,6 +7,7 @@ class UserAuthState extends ChangeNotifier {
 
   UserAuthState(this.userStream) {
     userStream.listen((event) async {
+      print('in auth state user is : ${event?.id}');
       currentUser = event;
       notifyListeners();
     });

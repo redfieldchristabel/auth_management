@@ -57,21 +57,22 @@ abstract class BaseAuthService<T extends BaseUser> {
   /// This initialization is automatically call in [AuthScreenHandler] widget so
   /// only call this function if you don't use [AuthScreenHandler]
   ///
+  /// !!! This method must be called in build method !!!
+  ///
   /// Example usage:
   ///
   /// ```dart
-  /// final ref = ProviderContainer();
   ///
-  /// // ...
-  ///
-  /// ref.read(userStreamProvider).listen((newUser) {
-  ///   linkAuthWithProvider(ref);
-  /// });
+  /// @override
+  ///   Widget build(BuildContext context) {
+  ///     authService.linkAuthWithProvider(ref);
+  ///     ...
   /// ```
   void linkAuthWithProvider(WidgetRef ref) {
     userStream().listen((newUser) {
       print('User exist: ${newUser != null}');
       if (newUser != null) {
+        print("container read package");
         ref.watch(userNotifierProvider.notifier).signIn(newUser);
       } else {
         ref.watch(userNotifierProvider.notifier).signOut();
@@ -219,7 +220,7 @@ abstract class BaseAuthService<T extends BaseUser> {
   }
 
   /// Return the listenable version of current auth
-  authListenable() => UserAuthState(userStream());
+  UserAuthState authListenable() => UserAuthState(userStream());
 
   /// A widget that register current user from the request param
   /// [user] a object that will be register as current user

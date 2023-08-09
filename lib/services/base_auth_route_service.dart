@@ -6,6 +6,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:isar/isar.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 /// A function type for redirecting the GoRouter to a different route.
 typedef GoRouterRedirectFunction = FutureOr<String?> Function(
@@ -43,11 +45,11 @@ abstract class BaseAuthRouteService {
       BaseAuthService.authService.authListenable();
 
   /// Configures the GoRouter with the specified routes and settings.
-  GoRouter routerConfig(WidgetRef ref) {
+  GoRouter routerConfig() {
     return GoRouter(
       refreshListenable: refreshListenable,
       routes: routes,
-      redirect: authGateFuncGenerator(ref),
+      redirect: authGateFuncGenerator(),
       errorBuilder: errorScreenBuilder,
     );
   }
@@ -65,8 +67,9 @@ abstract class BaseAuthRouteService {
   List<String> get testRoutes => [];
 
   /// Generates the authentication gate redirect function.
-  GoRouterRedirectFunction authGateFuncGenerator(WidgetRef ref) {
+  GoRouterRedirectFunction authGateFuncGenerator() {
     return (BuildContext context, GoRouterState state) {
+      final con = ProviderScope.containerOf(context);
       // return test screen in any case
       if (testScreen != null) {
         if (testRoutes.any((element) => element == state.uri.toString())) {
@@ -80,11 +83,11 @@ abstract class BaseAuthRouteService {
         print(state.uri.toString());
       }
 
-      final bool excludeScreenCheck =
-          withoutAuthRoutes?.any((element) => element == state.uri.toString()) ??
-              false;
+      final bool excludeScreenCheck = withoutAuthRoutes
+              ?.any((element) => element == state.uri.toString()) ??
+          false;
 
-      if (ref.watch(userNotifierProvider) == null && !excludeScreenCheck) {
+      if (con.read(userNotifierProvider) == null && !excludeScreenCheck) {
         if (kDebugMode) {
           print('User is not authenticated');
         }
