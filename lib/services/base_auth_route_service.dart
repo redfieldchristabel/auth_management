@@ -91,6 +91,10 @@ abstract class BaseAuthRouteService {
               ?.any((element) => element == state.uri.toString()) ??
           false;
 
+      if (kDebugMode) {
+        print('user from container ref ${con.read(userNotifierProvider)}');
+      }
+
       if (con.read(userNotifierProvider) == null && !excludeScreenCheck) {
         if (kDebugMode) {
           print('User is not authenticated');
