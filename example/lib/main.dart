@@ -38,7 +38,7 @@ class _MyAppState extends ConsumerState<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
-      routerConfig: authRouteService.routerConfig(ref),
+      routerConfig: authRouteService.routerConfig(),
     );
 
     // return MaterialApp(
