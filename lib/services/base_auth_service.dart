@@ -319,6 +319,6 @@ abstract class BaseAuthService<T extends BaseUser> {
   /// if you did override this function call the super method.
   @mustCallSuper
   Future<void> signOut() async {
-    await usersIsar.where().deleteAll();
+    await isar.writeTxn(() => usersIsar.where().deleteAll());
   }
 }
