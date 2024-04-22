@@ -82,8 +82,7 @@ abstract class BaseAuthService<T extends BaseUser> {
 
   /// FNV-1a 64bit hash algorithm optimized for Dart Strings
   static int fastHash(String string) {
-    var hash = 0xcbf29ce484222325;
-
+    int hash = 0xcbf29ce4;
     var i = 0;
     while (i < string.length) {
       final codeUnit = string.codeUnitAt(i++);
