@@ -124,7 +124,11 @@ abstract class BaseAuthRouteService {
       }
 
       // authorization gate
-      return authorizationGate(user!);
+      if (user != null) {
+        return authorizationGate(user);
+      }
+
+      return null;
     };
   }
 }
