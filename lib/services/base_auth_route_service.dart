@@ -1,13 +1,13 @@
 import 'dart:async';
 
 import 'package:auth_management/auth_management.dart';
+import 'package:auth_management/models/base_user.dart';
 import 'package:auth_management/models/user_auth_state.dart';
 import 'package:auth_management/services/auth_route.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:isar/isar.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 /// A function type for redirecting the GoRouter to a different route.
@@ -73,7 +73,7 @@ abstract class BaseAuthRouteService {
   ///
   /// Return a screen route location to redirect to those routes
   /// Return null to proceed with context route
-  String? authorizationGate() => null;
+  String? authorizationGate(BaseUser user) => null;
 
   /// Generates the authentication gate redirect function.
   GoRouterRedirectFunction authGateFuncGenerator() {
@@ -124,7 +124,7 @@ abstract class BaseAuthRouteService {
       }
 
       // authorization gate
-      return authorizationGate();
+      return authorizationGate(user!);
     };
   }
 }
