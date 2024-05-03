@@ -321,6 +321,8 @@ abstract class BaseAuthService<T extends BaseUser> {
   /// if you did override this function call the super method.
   @mustCallSuper
   Future<void> signOut() async {
-    await isar.writeTxn(() => usersIsar.where().deleteAll());
+    if (BaseAuthService.authService is! FirebaseAuthService) {
+      await isar.writeTxn(() => usersIsar.where().deleteAll());
+    }
   }
 }
