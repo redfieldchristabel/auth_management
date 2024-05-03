@@ -67,6 +67,14 @@ abstract class BaseAuthRouteService {
   /// you need to include that route in this list
   List<String> get testRoutes => [];
 
+  /// Gate for authorization redirect.
+  /// Use this override to bypass the auth gate.
+  /// Normally used for role checking
+  ///
+  /// Return a screen route location to redirect to those routes
+  /// Return null to proceed with context route
+  String? authorizationGate() => null;
+
   /// Generates the authentication gate redirect function.
   GoRouterRedirectFunction authGateFuncGenerator() {
     return (BuildContext context, GoRouterState state) {
@@ -114,7 +122,9 @@ abstract class BaseAuthRouteService {
       if (state.uri.toString() == SignInRoute().location) {
         return afterAuthRouteLocation;
       }
-      return null;
+
+      // authorization gate
+      return authorizationGate();
     };
   }
 }
