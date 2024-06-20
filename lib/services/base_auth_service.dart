@@ -25,12 +25,13 @@ abstract class BaseAuthService<T extends BaseUser> {
   /// Run this function at the first function that will run first during the start up of the application.
   /// Normally inside the main function
   //TODO: make method use named parameter
-  static Future<void> initialize(CollectionSchema<dynamic>? userSchema,
-      BaseAuthService authService) async {
+  static Future<void> initialize(
+      CollectionSchema<dynamic>? userSchema, BaseAuthService authService,
+      [List<CollectionSchema<dynamic>>? extraSchemas]) async {
     final dir = await getApplicationDocumentsDirectory();
     if (userSchema != null) {
       isar = await Isar.open(
-        [userSchema],
+        [userSchema, ...?extraSchemas],
         directory: dir.path,
       );
     }
