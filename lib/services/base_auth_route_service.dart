@@ -29,7 +29,7 @@ abstract class BaseAuthRouteService {
   /// circumstances that you maybe familiar is after
   /// sign up user are auto login to the app without need
   /// to re-login again.
-  List<String> get authScreenRoutes => [];
+  List<String> get triggerAfterAuthRouteLocationRoutes => [];
 
   /// The list of authentication routes.
   List<RouteBase> get authRoutes => $appRoutes;
@@ -132,7 +132,7 @@ abstract class BaseAuthRouteService {
         return SignInRoute().location;
       }
 
-      if ([SignInRoute().location, ...authRoutes].contains(state.fullPath ?? state.uri.toString() )) {
+      if ([SignInRoute().location, ...triggerAfterAuthRouteLocationRoutes].contains(state.fullPath ?? state.uri.toString() )) {
         return afterAuthRouteLocation;
       }
 
