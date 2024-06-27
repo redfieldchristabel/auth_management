@@ -133,10 +133,7 @@ abstract class BaseAuthRouteService {
       }
 
       if ([SignInRoute().location, ...triggerAfterAuthRouteLocationRoutes].any(
-        (element) {
-          print('element $element  - ${(state.fullPath ?? state.uri.toString())}');
-          return (state.fullPath ?? state.uri.toString()) == element;
-        },
+        (element) => (state.fullPath ?? state.uri.toString()) == element,
       )) {
         return afterAuthRouteLocation;
       }
