@@ -104,8 +104,12 @@ abstract class BaseAuthRouteService {
         print(state.uri.toString());
       }
 
-      final bool excludeScreenCheck = withoutAuthRoutes
-              ?.any((element) => element == state.fullPath || state.uri.toString().contains(element)) ??
+      final bool excludeScreenCheck = withoutAuthRoutes?.any((element) {
+            print(
+                "ccccccccccccccccccccccccccc xxx $element == ${state.fullPath}");
+            return element == state.fullPath ||
+                state.uri.toString().contains(element);
+          }) ??
           false;
 
       if (kDebugMode) {
