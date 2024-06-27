@@ -19,6 +19,18 @@ abstract class BaseAuthRouteService {
   /// The route location to navigate to after successful authentication.
   String get afterAuthRouteLocation;
 
+  /// The route location then will navigate to [afterAuthRouteLocation].
+  /// Currently only [SignInRoute] will redirect to [afterAuthRouteLocation]
+  /// if user is exists, maybe you have extra screen then also perform and
+  /// authentication and need to redirect to [afterAuthRouteLocation].
+  ///
+  /// example: is magic link feature, signup, etc.
+  ///
+  /// circumstances that you maybe familiar is after
+  /// sign up user are auto login to the app without need
+  /// to re-login again.
+  List<String> get authScreenRoutes => [];
+
   /// The list of authentication routes.
   List<RouteBase> get authRoutes => $appRoutes;
 
@@ -104,8 +116,9 @@ abstract class BaseAuthRouteService {
         print(state.uri.toString());
       }
 
-      final bool excludeScreenCheck = withoutAuthRoutes
-              ?.any((element) => element == state.fullPath || state.uri.toString().contains(element)) ??
+      final bool excludeScreenCheck = withoutAuthRoutes?.any((element) =>
+              element == state.fullPath ||
+              state.uri.toString().contains(element)) ??
           false;
 
       if (kDebugMode) {
@@ -119,7 +132,7 @@ abstract class BaseAuthRouteService {
         return SignInRoute().location;
       }
 
-      if (state.uri.toString() == SignInRoute().location) {
+      if ([SignInRoute().location, ...authRoutes].contains(state.fullPath ?? state.uri.toString() )) {
         return afterAuthRouteLocation;
       }
 
