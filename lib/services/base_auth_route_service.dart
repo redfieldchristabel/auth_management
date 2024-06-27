@@ -127,14 +127,22 @@ abstract class BaseAuthRouteService {
 
       if (!userExists && !excludeScreenCheck) {
         if (kDebugMode) {
-          print('User is not authenticated');
+          print('User is not authenticated and route ${state
+              .fullPath} is not excluded');
+          print('redirecting to ${SignInRoute().location}');
         }
         return SignInRoute().location;
       }
 
       if ([SignInRoute().location, ...triggerAfterAuthRouteLocationRoutes].any(
-        (element) => (state.fullPath ?? state.uri.toString()) == element,
-      )) {
+            (element) => (state.fullPath ?? state.uri.toString()) == element,
+          ) &&
+          userExists) {
+        if (kDebugMode) {
+          print(
+              'User is authenticated and route ${state.fullPath} is one of trigger after auth route');
+          print('redirecting to ${afterAuthRouteLocation}');
+        }
         return afterAuthRouteLocation;
       }
 
