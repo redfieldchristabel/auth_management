@@ -80,7 +80,7 @@ abstract class BaseAuthRouteService {
     return (BuildContext context, GoRouterState state) {
       if (kDebugMode) {
         print(
-            "trigger auth gate redirect builder for path ${state.uri.toString()} ${DateTime.now().millisecondsSinceEpoch}");
+            "trigger auth gate redirect builder for path ${state.fullPath} => ${state.uri.toString()} ${DateTime.now().millisecondsSinceEpoch}");
       }
       final con = ProviderScope.containerOf(context);
       final BaseUser? user = UserAuthState.currentUser;
@@ -105,7 +105,7 @@ abstract class BaseAuthRouteService {
       }
 
       final bool excludeScreenCheck = withoutAuthRoutes
-              ?.any((element) => element == state.uri.toString()) ??
+              ?.any((element) => element == state.fullPath || state.uri.toString().contains(element)) ??
           false;
 
       if (kDebugMode) {
