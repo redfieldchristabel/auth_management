@@ -16,6 +16,17 @@ typedef GoRouterRedirectFunction = FutureOr<String?> Function(
 
 /// An abstract base class for defining an authentication route service.
 abstract class BaseAuthRouteService {
+  /// The temporary initial route location.
+  /// Use case like if we open the app via the deeplink
+  /// or notification. then set this to that data route
+  /// and this service will use this route to replace
+  /// [afterAuthRouteLocation] default location.
+  /// this value will get remove after the full usage
+  /// via the [authGateFuncGenerator] method.
+  String? tempInitialRoute;
+
+  String get _initialRoute => tempInitialRoute ?? afterAuthRouteLocation;
+
   /// The route location to navigate to after successful authentication.
   String get afterAuthRouteLocation;
 
@@ -127,8 +138,8 @@ abstract class BaseAuthRouteService {
 
       if (!userExists && !excludeScreenCheck) {
         if (kDebugMode) {
-          print('User is not authenticated and route ${state
-              .fullPath} is not excluded');
+          print(
+              'User is not authenticated and route ${state.fullPath} is not excluded');
           print('redirecting to ${SignInRoute().location}');
         }
         return SignInRoute().location;
@@ -141,9 +152,11 @@ abstract class BaseAuthRouteService {
         if (kDebugMode) {
           print(
               'User is authenticated and route ${state.fullPath} is one of trigger after auth route');
-          print('redirecting to ${afterAuthRouteLocation}');
+          print('redirecting to $_initialRoute');
         }
-        return afterAuthRouteLocation;
+        final x = _initialRoute;
+        tempInitialRoute = null;
+        return x;
       }
 
       // authorization gate
