@@ -23,7 +23,7 @@ abstract class BaseAuthRouteService {
   /// [afterAuthRouteLocation] default location.
   /// this value will get remove after the full usage
   /// via the [authGateFuncGenerator] method.
-  String? tempInitialRoute;
+  static String? tempInitialRoute;
 
   String get _initialRoute => tempInitialRoute ?? afterAuthRouteLocation;
 
