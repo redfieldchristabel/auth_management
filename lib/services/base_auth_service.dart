@@ -216,7 +216,7 @@ abstract class BaseAuthService<T extends BaseUser> {
   /// return null of no current user
   Stream<T?> userStream() async* {
     yield await usersIsar.where().findFirst();
-    await for (final event in usersIsar.watchLazy()) {
+    await for (final _ in usersIsar.watchLazy()) {
       T? user = await usersIsar.where().findFirst();
       yield user;
     }
