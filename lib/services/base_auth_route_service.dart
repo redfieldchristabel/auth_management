@@ -142,6 +142,7 @@ abstract class BaseAuthRouteService {
               'User is not authenticated and route ${state.fullPath} is not excluded');
           print('redirecting to ${SignInRoute().location}');
         }
+        tempInitialRoute = state.fullPath;
         return SignInRoute().location;
       }
 
