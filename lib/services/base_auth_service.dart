@@ -38,6 +38,21 @@ abstract class BaseAuthService<T extends BaseUser> {
     BaseAuthService.authService = authService;
   }
 
+  /// Preload user from local storage only when you are using isar.
+  ///
+  /// This method just to preload user from local storage to improve the user
+  /// experience so route will not be null first.
+  ///
+  /// This method must not be called before [initialize].
+  /// THis method must not be called if your using with [FirebaseAuthService].
+  /// This method must be called before any Flutter [runApp] method called.
+  Future<void> preloadUserFromLocal() async {
+    final localUser = await usersIsar.where().findFirst();
+    if (localUser != null) {
+      UserAuthState.currentUser = localUser;
+    }
+  }
+
   BaseAuthRouteService get routeService => throw UnimplementedError();
 
   /// Links user authentication with a provider using Riverpod.
