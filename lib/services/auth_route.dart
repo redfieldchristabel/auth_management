@@ -20,7 +20,7 @@ class SignInRoute extends GoRouteData {
 class SignUpRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return BaseAuthService.authService.routeService.signInScreen;
+    return BaseAuthService.authService.routeService.signUpScreen;
   }
 }
 
