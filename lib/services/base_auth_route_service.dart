@@ -192,6 +192,10 @@ abstract class BaseAuthRouteService {
   /// this list. Routes defined in the [withoutAuthRoutes] property are automatically accessible from `testScreen`.
   List<String> get testRoutes => [];
 
+  /// Optional initial gate for initial redirection.
+  ///TODO: add documentation
+  String? initialGate();
+
   /// Optional authorization gate for role-based redirection.
   ///
   /// This property allows you to define custom logic for redirecting users based on their roles after
@@ -238,6 +242,15 @@ abstract class BaseAuthRouteService {
       }
       final con = ProviderScope.containerOf(context);
       final BaseUser? user = UserAuthState.currentUser;
+
+      final initialGateRoute = initialGate();
+
+      if (initialGateRoute != null) {
+        if (kDebugMode) {
+          print("redirecting to initial gate route $initialGateRoute");
+        }
+        return initialGateRoute;
+      }
 
       if (kDebugMode) {
         print("current user from UserAuthState $user");
