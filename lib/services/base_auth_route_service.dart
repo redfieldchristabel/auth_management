@@ -25,6 +25,8 @@ typedef GoRouterRedirectFunction = FutureOr<String?> Function(
 /// This approach promotes code reusability and separation of concerns by isolating authentication-related
 /// route management logic within dedicated service classes.
 abstract class BaseAuthRouteService {
+  String? overrideRoute;
+
   /// A temporary initial route location used for deep links or notifications.
   ///
   /// This variable holds a route location that takes priority over
@@ -240,6 +242,16 @@ abstract class BaseAuthRouteService {
         print(
             "trigger auth gate redirect builder for path ${state.fullPath} => ${state.uri.toString()}, tempInitial $tempInitialRoute ${DateTime.now().millisecondsSinceEpoch}");
       }
+
+      final overrideInitialRoute = overrideRoute;
+
+      if (overrideInitialRoute != null) {
+        if (kDebugMode) {
+          print("redirecting to override route $overrideInitialRoute");
+        }
+        return overrideInitialRoute;
+      }
+
       final con = ProviderScope.containerOf(context);
       final BaseUser? user = UserAuthState.currentUser;
 
