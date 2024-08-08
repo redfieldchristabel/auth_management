@@ -238,7 +238,7 @@ abstract class BaseAuthRouteService {
     return (BuildContext context, GoRouterState state) {
       if (kDebugMode) {
         print(
-            "trigger auth gate redirect builder for path ${state.fullPath} => ${state.uri.toString()} ${DateTime.now().millisecondsSinceEpoch}");
+            "trigger auth gate redirect builder for path ${state.fullPath} => ${state.uri.toString()}, tempInitial $tempInitialRoute ${DateTime.now().millisecondsSinceEpoch}");
       }
       final con = ProviderScope.containerOf(context);
       final BaseUser? user = UserAuthState.currentUser;
