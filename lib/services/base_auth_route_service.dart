@@ -194,7 +194,7 @@ abstract class BaseAuthRouteService {
 
   /// Optional initial gate for initial redirection.
   ///TODO: add documentation
-  String? initialGate();
+  String? initialGate() => null;
 
   /// Optional authorization gate for role-based redirection.
   ///
