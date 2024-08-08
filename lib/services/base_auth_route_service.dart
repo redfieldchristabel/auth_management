@@ -243,13 +243,13 @@ abstract class BaseAuthRouteService {
             "trigger auth gate redirect builder for path ${state.fullPath} => ${state.uri.toString()}, tempInitial $tempInitialRoute ${DateTime.now().millisecondsSinceEpoch}");
       }
 
-      final overrideInitialRoute = overrideRoute;
-
-      if (overrideInitialRoute != null) {
+      if (overrideRoute != null) {
+        final _overrideInitialRoute = overrideRoute;
         if (kDebugMode) {
-          print("redirecting to override route $overrideInitialRoute");
+          print("redirecting to override route $overrideRoute");
         }
-        return overrideInitialRoute;
+        overrideRoute = null;
+        return _overrideInitialRoute;
       }
 
       final con = ProviderScope.containerOf(context);
