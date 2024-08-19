@@ -244,12 +244,12 @@ abstract class BaseAuthRouteService {
       }
 
       if (overrideRoute != null) {
-        final _overrideInitialRoute = overrideRoute;
+        final overrideInitialRoute = overrideRoute;
         if (kDebugMode) {
           print("redirecting to override route $overrideRoute");
         }
         overrideRoute = null;
-        return _overrideInitialRoute;
+        return overrideInitialRoute;
       }
 
       final con = ProviderScope.containerOf(context);
