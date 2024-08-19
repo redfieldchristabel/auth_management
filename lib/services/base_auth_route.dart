@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:auth_management/auth_management.dart';
-import 'package:auth_management/models/base_user.dart';
 import 'package:auth_management/models/user_auth_state.dart';
 import 'package:auth_management/services/auth_route.dart';
 import 'package:flutter/foundation.dart';
@@ -25,6 +24,14 @@ typedef GoRouterRedirectFunction = FutureOr<String?> Function(
 /// This approach promotes code reusability and separation of concerns by isolating authentication-related
 /// route management logic within dedicated service classes.
 abstract class BaseAuthRouteService {
+  static final GlobalKey<NavigatorState> _rootNavigator =
+      GlobalKey<NavigatorState>();
+
+  // getter to prevent assignment and can be access by this class descendant.
+  GlobalKey<NavigatorState> get rootNavigator => _rootNavigator;
+
+  BuildContext? get rootContext => rootNavigator.currentState?.overlay?.context;
+
   String? overrideRoute;
 
   /// A temporary initial route location used for deep links or notifications.
@@ -332,6 +339,7 @@ abstract class BaseAuthRouteService {
   /// Returns a configured GoRouter instance that manages routing within the application.
   GoRouter routerConfig() {
     return GoRouter(
+      navigatorKey: rootNavigator,
       refreshListenable: refreshListenable,
       routes: routes,
       redirect: authGateFuncGenerator(),

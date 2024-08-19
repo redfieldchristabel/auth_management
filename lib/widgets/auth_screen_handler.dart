@@ -1,5 +1,5 @@
 import 'package:auth_management/models/base_user.dart';
-import 'package:auth_management/services/base_auth_service.dart';
+import 'package:auth_management/services/base_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

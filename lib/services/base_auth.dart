@@ -15,6 +15,8 @@ abstract class BaseAuthService<T extends BaseUser> {
   static late final Isar isar;
   static late final BaseAuthService authService;
 
+  final T? currentUser = UserAuthState.currentUser as T?;
+
   /// a client that initialize after any OAUTH2 authentication method are called
   /// use any of this method to authenticate with OAuth2 server
   /// [signInWithResourceOwnerPasswordGrant]
