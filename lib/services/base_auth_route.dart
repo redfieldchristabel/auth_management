@@ -247,7 +247,7 @@ abstract class BaseAuthRouteService {
     return (BuildContext context, GoRouterState state) {
       if (kDebugMode) {
         print(
-            "trigger auth gate redirect builder for path ${state.fullPath} => ${state.uri.toString()}, tempInitial $tempInitialRoute ${DateTime.now().millisecondsSinceEpoch}");
+            "trigger auth gate redirect builder for path ${state.fullPath} | ${state.matchedLocation} => ${state.uri.toString()}, tempInitial $tempInitialRoute ${DateTime.now().millisecondsSinceEpoch}");
       }
 
       if (overrideRoute != null) {
@@ -306,7 +306,7 @@ abstract class BaseAuthRouteService {
           print('redirecting to ${SignInRoute().location}');
         }
         if (state.fullPath != SignInRoute().location) {
-          tempInitialRoute = state.fullPath;
+          tempInitialRoute = state.matchedLocation;
         }
         return SignInRoute().location;
       }
