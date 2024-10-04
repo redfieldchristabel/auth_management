@@ -7,14 +7,13 @@ environment:
   sdk: '>=2.19.6 <3.0.0'
   flutter: ">=1.17.0"
 
-isar_version: &isar_version 3.1.8 # define the version to be used
 
 dependencies:
   isar:
-    version: *isar_version
+    version: 3.1.8
     hosted: https://pub.isar-community.dev/
   isar_flutter_libs: # contains Isar Core
-      version: *isar_version
+      version: 3.1.8
       hosted: https://pub.isar-community.dev/
   firebase_auth: ^5.1.0
   firebase_core: ^3.1.0
@@ -29,11 +28,12 @@ dependencies:
   path_provider: ^2.0.14
   riverpod_annotation: ^2.1.1
   url_launcher: ^6.1.10
+  app_links: ^6.3.2
 
 
 dev_dependencies:
   isar_generator:
-    version: *isar_version
+    version: 3.1.8
     hosted: https://pub.isar-community.dev/
   build_runner: any
   flutter_test:

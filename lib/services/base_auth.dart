@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:app_links/app_links.dart';
 import 'package:auth_management/auth_management.dart';
 import 'package:auth_management/models/user_auth_state.dart';
 import 'package:flutter/cupertino.dart';
@@ -8,7 +9,8 @@ import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:oauth2/oauth2.dart' as oauth2;
 import 'package:http/http.dart' as http;
-import 'package:uni_links/uni_links.dart';
+
+// import 'package:uni_links/uni_links.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 abstract class BaseAuthService<T extends BaseUser> {
@@ -331,7 +333,8 @@ abstract class BaseAuthService<T extends BaseUser> {
 
   Future<Uri?> _listenAuthorizationServerLogin(Uri redirectUri) {
     // Attach a listener to the stream
-    return uriLinkStream
+    return AppLinks()
+        .uriLinkStream
         .firstWhere((uri) => uri.toString().startsWith(redirectUri.toString()));
   }
 
