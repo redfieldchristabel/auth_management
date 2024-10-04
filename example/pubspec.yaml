@@ -27,12 +27,22 @@ environment:
 # dependencies can be manually updated by changing the version numbers below to
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
+
+isar_version: &isar_version 3.1.8 # define the version to be used
+
 dependencies:
   flutter:
     sdk: flutter
 
   auth_management:
     path: ../../auth_management
+
+  isar:
+    version: *isar_version
+    hosted: https://pub.isar-community.dev/
+  isar_flutter_libs: # contains Isar Core
+      version: *isar_version
+      hosted: https://pub.isar-community.dev/
 
   flutter_riverpod: ^2.3.6
   riverpod_annotation: ^2.1.1
@@ -41,8 +51,8 @@ dependencies:
   cupertino_icons: ^1.0.2
   freezed_annotation: ^2.2.0
   json_annotation: ^4.8.0
-  isar: ^3.1.0+1
-  isar_flutter_libs: ^3.1.0+1
+#  isar: ^3.1.0+1
+#  isar_flutter_libs: ^3.1.0+1
   oauth2: ^2.0.1
   firebase_auth: ^5.1.0
   firebase_core: ^3.1.0
@@ -53,6 +63,11 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
+  isar_generator:
+    version: *isar_version
+    hosted: https://pub.isar-community.dev/
+  build_runner: any
+
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
   # activated in the `analysis_options.yaml` file located at the root of your
@@ -62,9 +77,9 @@ dev_dependencies:
   custom_lint: ^0.5.6
   freezed: ^2.3.2
   json_serializable: ^6.6.1
-  isar_generator: ^3.1.0+1
+#  isar_generator: ^3.1.0+1
   riverpod_lint: ^2.1.1
-  build_runner: ^2.4.6
+#  build_runner: ^2.4.6
   riverpod_generator: ^2.3.3
   go_router_builder: ^2.3.4
 
