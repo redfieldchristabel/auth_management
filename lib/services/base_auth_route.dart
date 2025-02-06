@@ -222,6 +222,8 @@ abstract class BaseAuthRouteService {
   /// Bypassing the auth gate entirely should be done through the [testScreen] property, not through this function.
   String? authorizationGate(BaseUser user) => null;
 
+  void onRouteChanged(BuildContext context, GoRouterState state) {}
+
   /// Generates a redirect function for `GoRouter` based on authentication state and authorization checks.
   ///
   /// This function creates a closure that serves as a `GoRouterRedirectFunction`. This function
@@ -249,6 +251,8 @@ abstract class BaseAuthRouteService {
         print(
             "trigger auth gate redirect builder for path ${state.fullPath} | ${state.matchedLocation} => ${state.uri.toString()}, tempInitial $tempInitialRoute ${DateTime.now().millisecondsSinceEpoch}");
       }
+
+      onRouteChanged(context, state);
 
       if (overrideRoute != null) {
         final overrideInitialRoute = overrideRoute;
